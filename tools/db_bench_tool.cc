@@ -1109,6 +1109,10 @@ DEFINE_int32(prepopulate_blob_cache, 0,
              "[Integrated BlobDB] Pre-populate hot/warm blobs in blob cache. 0 "
              "to disable and 1 to insert during flush.");
 
+DEFINE_string(spdk, "", "Name of SPDK configuration file");
+DEFINE_string(spdk_bdev, "", "Name of SPDK blockdev to load");
+DEFINE_uint64(spdk_cache_size, 4096, "Size of SPDK filesystem cache (in MB)");
+
 #ifndef ROCKSDB_LITE
 
 // Secondary DB instance Options
@@ -8538,6 +8542,15 @@ int db_bench_tool(int argc, char** argv) {
     exit(1);
   }
 
+  if (!FLAGS_spdk.empty()) {
+    FLAGS_env = rocksdb::NewSpdkEnv(rocksdb::Env::Default(), FLAGS_db, FLAGS_spdk, FLAGS_spdk_bdev, FLAGS_spdk_cache_size);
+  if (FLAGS_env == NULL) {
+    fprintf(stderr, "Could not load SPDK blobfs - check that SPDK mkfs was run "
+                    "against block device %s.\n", FLAGS_spdk_bdev.c_str());
+    exit(1);
+    }
+  }
+
   if (!strcasecmp(FLAGS_compaction_fadvice.c_str(), "NONE"))
     FLAGS_compaction_fadvice_e = ROCKSDB_NAMESPACE::Options::NONE;
   else if (!strcasecmp(FLAGS_compaction_fadvice.c_str(), "NORMAL"))
@@ -8591,8 +8604,10 @@ int db_bench_tool(int argc, char** argv) {
     exit(1);
   }
 
-  ROCKSDB_NAMESPACE::Benchmark benchmark;
-  benchmark.Run();
+  // Allocate the Benchmark off the heap, so that we can explicitly delete it
+  //  before the SpdkEnv is deleted.
+  ROCKSDB_NAMESPACE::Benchmark *benchmark = new ROCKSDB_NAMESPACE::Benchmark;
+  benchmark->Run();
 
 #ifndef ROCKSDB_LITE
   if (FLAGS_print_malloc_stats) {
@@ -8601,6 +8616,11 @@ int db_bench_tool(int argc, char** argv) {
     fprintf(stdout, "Malloc stats:\n%s\n", stats_string.c_str());
   }
 #endif  // ROCKSDB_LITE
+
+  delete benchmark;
+  if (!FLAGS_spdk.empty()) {
+    delete FLAGS_env;
+  }
 
   return 0;
 }
