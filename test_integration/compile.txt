@@ -1,0 +1,2 @@
+
+g++ -std=c++17 -o rocksdbtest test.cpp -Wl,--whole-archive /usr/lib/x86_64-linux-gnu/liblz4.a /usr/lib/x86_64-linux-gnu/libz.a /usr/lib/x86_64-linux-gnu/libnuma.a /usr/lib/x86_64-linux-gnu/libzstd.a /usr/lib/x86_64-linux-gnu/libuuid.a /usr/lib/x86_64-linux-gnu/libssl.a /usr/lib/x86_64-linux-gnu/libbz2.a /usr/lib/x86_64-linux-gnu/libaio.a /usr/lib/x86_64-linux-gnu/libcrypto.a /usr/lib/x86_64-linux-gnu/libsnappy.a ./spdk/build/lib/*.a ./spdk/dpdk/build/lib/*.a ./rocksdb/librocksdb.a -Wl,--no-whole-archive
