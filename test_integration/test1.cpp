@@ -11,7 +11,7 @@ const std::string PATH = "./data_path";
 int main(int argc, char** argv){
     DB* db;
     Options options;
-    rocksdb::Env* spdk_env = rocksdb::NewSpdkEnv(rocksdb::Env::Default(), argv[1], argv[2], argv[3], 4096);
+    rocksdb::Env* spdk_env = rocksdb::NewSpdkEnv(rocksdb::Env::Default(), PATH, argv[2], argv[3], 4096);
     printf("\n");
     if (spdk_env==NULL){
         printf("spdk_env initialization fail\n");
@@ -30,5 +30,6 @@ int main(int argc, char** argv){
         printf("get failed\n");
     }
     delete db;
+    delete spdk_env;
     return 0;
 }
