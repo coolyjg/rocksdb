@@ -1894,6 +1894,10 @@ std::unique_ptr<Env> NewCompositeEnv(const std::shared_ptr<FileSystem>& fs);
 Env* NewSpdkEnv(Env* base_env, const std::string& fsname, const std::string& confname,
                 const std::string& bdevname, uint64_t cache_size_in_mb);
 
+// Use exist spdk environment to start rocksdb
+Env* UseSpdkEnv(void* opts, Env *base_env, const std::string &dir, const std::string &conf,
+		const std::string &bdev, uint64_t cache_size_in_mb);
+
 // Initializes a thread for SpdkEnv processing.
 void SpdkInitializeThread(void);
 
