@@ -187,7 +187,7 @@ endif
 
 #-----------------------------------------------
 include src.mk
-SPDK_DIR ?= ../spdk
+SPDK_DIR = ../spdk
 SPDK_ROOT_DIR := $(abspath $(SPDK_DIR))
 
 AM_DEFAULT_VERBOSITY ?= 0

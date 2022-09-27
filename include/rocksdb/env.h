@@ -1895,7 +1895,7 @@ Env* NewSpdkEnv(Env* base_env, const std::string& fsname, const std::string& con
                 const std::string& bdevname, uint64_t cache_size_in_mb);
 
 // Use exist spdk environment to start rocksdb
-Env* UseSpdkEnv(void* opts, Env *base_env, const std::string &dir, const std::string &conf,
+Env* UseSpdkEnv(void* fs, uint32_t lcore, Env *base_env, const std::string &dir, const std::string &conf,
 		const std::string &bdev, uint64_t cache_size_in_mb);
 
 // Initializes a thread for SpdkEnv processing.

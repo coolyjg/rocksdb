@@ -4782,9 +4782,9 @@ rocksdb_env_t* rocksdb_create_spdk_env(
 }
 
 rocksdb_env_t* rocksdb_use_spdk_env(
-    void* opts, const char *dir, const char *conf, const char *bdev, uint64_t cache_size_in_mb){
+    void* fs, uint32_t lcore, const char *dir, const char *conf, const char *bdev, uint64_t cache_size_in_mb){
       rocksdb_env_t* result = new rocksdb_env_t;
-  result->rep = rocksdb::UseSpdkEnv(opts, rocksdb::Env::Default(), dir, conf, bdev, cache_size_in_mb);
+  result->rep = rocksdb::UseSpdkEnv(fs, lcore, rocksdb::Env::Default(), dir, conf, bdev, cache_size_in_mb);
   result->is_default = false;
   if (result->rep == NULL) {
     delete result;

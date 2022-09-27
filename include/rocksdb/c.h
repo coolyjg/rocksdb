@@ -2012,7 +2012,7 @@ extern ROCKSDB_LIBRARY_API rocksdb_env_t* rocksdb_create_default_env(void);
 extern ROCKSDB_LIBRARY_API rocksdb_env_t* rocksdb_create_spdk_env(
     const char *dir, const char *conf, const char *bdev, uint64_t cache_size_in_mb);
 extern ROCKSDB_LIBRARY_API rocksdb_env_t* rocksdb_use_spdk_env(
-    void* opts, const char *dir, const char *conf, const char *bdev, uint64_t cache_size_in_mb);
+    void* fs, uint32_t lcore, const char *dir, const char *conf, const char *bdev, uint64_t cache_size_in_mb);
 extern ROCKSDB_LIBRARY_API rocksdb_env_t* rocksdb_create_mem_env(void);
 extern ROCKSDB_LIBRARY_API void rocksdb_env_set_background_threads(
     rocksdb_env_t* env, int n);
